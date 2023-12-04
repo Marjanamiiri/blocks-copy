@@ -1,61 +1,54 @@
-import { db } from "@/db";
 import { redirect } from "next/navigation";
+import { db } from "@/db";
 
 export default function BlockCreatePage() {
   async function createBlock(formData: FormData) {
     "use server";
-    // Get the data out of formData
-    const title = formData.get("title") as string;
-    const tag = formData.get("tag") as string;
-    const code = formData.get("code") as string;
 
-    // Create a new block in our database using prisma
-    await db.block.create({ data: { title, tag, code } });
-    // Redirect the user back to the home page
-    redirect("/");
+    const title = formData.get('title') as string;
+    const code = formData.get('code') as string;
+    const tag = formData.get('tag') as string;
+
+    await db.block.create({ data: { title, code, tag }});
+
+    redirect('/');
   }
+
   return (
-    <form action={createBlock}>
-      <h3 className="font-bold m-3">Create a Block</h3>
-      <div className="flex flex-col gap-4">
-        <div className="flex gap-4">
-          <label className="w-12" htmlFor="title">
-            Title
-          </label>
-          <input
-            className="border rounded p-2 w-full"
-            type="text"
-            name="title"
-            id="title"
-          />
-        </div>
+    <form className="container mx-auto my-8" action={createBlock}>
+      <h1 className="text-xl font-bold mb-4">Create Block</h1>
 
-        <div className="flex gap-4">
-          <label className="w-12" htmlFor="tag">
-            Tag
-          </label>
-          <input
-            className="border rounded p-2 w-full"
-            type="text"
-            name="tag"
-            id="tag"
-          />
+      <div className="text-sm mb-4">
+        <div className="flex justify-between leading-6">
+          <label className="block font-medium text-gray-900" htmlFor="title">Title</label>
+          <span className="text-gray-500">Required</span>
         </div>
-
-        <div className="flex gap-4">
-          <label className="w-12" htmlFor="code">
-            Code
-          </label>
-          <textarea
-            className="border rounded p-2 w-full"
-            name="code"
-            id="code"
-          />
+        <div className="mt-2">
+          <input type="text" name="title" id="title" className="block w-full border-0 rounded-md px-1.5 py-1.5 ring-inset ring-1 ring-gray-300" />
         </div>
-        <button type="submit" className="rounded p-2 text-white bg-blue-500">
-          Create
-        </button>
       </div>
+
+      <div className="text-sm mb-4">
+        <div className="flex justify-between leading-6">
+          <label className="block font-medium text-gray-900" htmlFor="code">Code Block</label>
+          <span className="text-gray-500">Required</span>
+        </div>
+        <div className="mt-2">
+          <textarea name="code" id="code" className="block w-full border-0 rounded-md px-1.5 py-1.5 ring-inset ring-1 ring-gray-300"></textarea>
+        </div>
+      </div>
+
+      <div className="text-sm mb-4">
+        <div className="flex justify-between leading-6">
+          <label className="block font-medium text-gray-900" htmlFor="tag">Tag</label>
+          <span className="text-gray-500">Optional</span>
+        </div>
+        <div className="mt-2">
+          <input type="text" name="tag" id="tag" className="block w-full border-0 rounded-md px-1.5 py-1.5 ring-inset ring-1 ring-gray-300" />
+        </div>
+      </div>
+
+      <button className="bg-sky-600 rounded-md px-3 py-1.5 ml-auto font-semibold text-sm text-white">Save</button>
     </form>
-  );
+  )
 }

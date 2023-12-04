@@ -10,6 +10,7 @@ export default async function Home() {
       href={`/blocks/${block.id}`}
     >
       <div>{block.title}</div>
+      <span className="inline-flex items-center rounded-md bg-pink-50 ml-2 px-2 py-1 text-xs font-medium text-pink-700 ring-1 ring-inset ring-pink-700/10">{block.tag}</span>
     </Link>
   ));
 
